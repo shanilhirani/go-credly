@@ -5,7 +5,7 @@ linters-settings:
   gocyclo:
     min-complexity: 15
   goimports:
-    local-prefixes: github.com/golang-templates/seed
+    local-prefixes: github.com/shanilhirani/go-credly
   govet:
     shadow: true
   misspell:
@@ -53,5 +53,5 @@ linters:
     - whitespace
 
 issues:
-  # enable issues excluded by default 
+  # enable issues excluded by default
   exclude-use-default: false

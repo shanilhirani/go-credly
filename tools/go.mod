@@ -1,4 +1,4 @@
-module github.com/golang-templates/seed/build
+module github.com/shanilhirani/go-credly/build
 
 go 1.22
 
