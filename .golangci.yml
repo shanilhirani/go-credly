@@ -9,7 +9,7 @@ linters-settings:
   govet:
     shadow: true
   misspell:
-    locale: US
+    locale: UK
   nolintlint:
     allow-unused: false # report any unused nolint directives
     require-explanation: true # require an explanation for nolint directives
