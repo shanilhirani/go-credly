@@ -26,5 +26,9 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": "explicit"
         }
-    }
+    },
+    "cSpell.words": [
+        "Credly's",
+        "Credly"
+    ]
 }
