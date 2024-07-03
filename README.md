@@ -9,6 +9,8 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/shanilhirani/go-credly)](https://goreportcard.com/report/github.com/shanilhirani/go-credly)
 [![Codecov](https://codecov.io/gh/shanilhirani/go-credly/branch/main/graph/badge.svg)](https://codecov.io/gh/shanilhirani/go-credly)
 
+## About
+
 This repository contains a Go application that fetches public data from Credly's API which results in a users badges on Credly.
 
 ## Prerequisites
