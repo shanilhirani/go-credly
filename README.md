@@ -11,10 +11,16 @@
 
 ## About
 
-This repository contains a Go application that fetches public data from Credly's API which results in a users badges on Credly.
+Go Credly is a Go App which enables users to obtain Certification Badges earned on Credly's Certification Platform.
+
+If your Credly Badges are made public then all you need is your Credly `username` and you'll be able to pull your badges programmatically.
+
+### Use case
+- You could use this tool to dynamically update a CV/Resume, Portfolios and Personal Websites using a Github Action, or just running the binary on a cron.
 
 ## Prerequisites
 
+- Credly with Public Badges
 - [Go](https://golang.org/dl/) installed (version 1.22 or later)
 - Internet connection
 
@@ -22,7 +28,7 @@ This repository contains a Go application that fetches public data from Credly's
 
 Clone the repository:
 
-```sh
+```bash
 git clone https://github.com/yourusername/go_credly.git
 cd go_credly
 ```
@@ -30,12 +36,16 @@ cd go_credly
 ## Usage
 
 To run the application, execute the following command:
-go run main.goshThe application will fetch data from the API and print it to the standard output.
+
+`go run main.go <yourcredlyusername>`
+
+Then *go-credly* will attempt to fetch data from Credly's API and return the result in JSON to standard out.
 
 ## Configuration
 
-You can configure the API endpoint by modifying the code in `main.go`.
-const apiUrl = "https://api.example.com/data"go## License
+TBC
+
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
