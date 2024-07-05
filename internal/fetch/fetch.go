@@ -64,3 +64,38 @@ func (c *Client) Fetch(param string) (*types.CredlyData, error) {
 
 	return &result, nil
 }
+
+type FilteredBadge struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	ImageURL    string `json:"image_url"`
+	URL         string `json:"url"`
+}
+
+// FilterData filters the CredlyData struct to include only the required fields
+// It takes a parameter 'param' which is the username or user ID for which the data needs to be filtered
+// It returns a slice of filtered Badge structs and an error if any occurs during the filtering process
+// For example: filteredBadges, err := FilterData("john_doe")
+func FilterData(param string, data *types.CredlyData) ([]FilteredBadge, error) {
+	var filteredBadges []FilteredBadge
+
+	// Iterate over the slice of anonymous structs in CredlyData
+	for _, badge := range data.Data {
+		// Check if the badge is issued to the specified user
+		if badge.EarnerPath == fmt.Sprintf("/users/%s", param) {
+			filteredBadge := FilteredBadge{
+				Name:        badge.BadgeTemplate.Name,
+				Description: badge.BadgeTemplate.Description,
+				ImageURL:    badge.BadgeTemplate.ImageURL,
+				URL:         badge.BadgeTemplate.URL,
+			}
+			filteredBadges = append(filteredBadges, filteredBadge)
+		}
+	}
+
+	if len(filteredBadges) == 0 {
+		return nil, fmt.Errorf("no badges found for user %s", param)
+	}
+
+	return filteredBadges, nil
+}

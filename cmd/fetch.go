@@ -5,7 +5,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	"github.com/spf13/cobra"
 
@@ -22,8 +22,7 @@ var fetchCmd = &cobra.Command{
 func fetchRun(cmd *cobra.Command, args []string) {
 	// Check if the required argument (user ID or username) is provided
 	if len(args) < 1 {
-		cmd.Help()
-		os.Exit(1)
+		log.Fatalf("Error: Credly Username/ID not supplied")
 	}
 	param := args[0]
 
@@ -31,14 +30,24 @@ func fetchRun(cmd *cobra.Command, args []string) {
 	client := fetch.NewClient(nil)
 
 	// Call the Fetch function
-	result, err := client.Fetch(param)
+	credlyData, err := client.Fetch(param)
 	if err != nil {
-		fmt.Println("Error:", err)
-		os.Exit(1)
+		log.Fatalf("Error: Call to Fetch encountered an error: %v", err)
 	}
 
-	// Print the result
-	fmt.Printf("%+v\n", result)
+	// Filter the data
+	filteredBadges, err := fetch.FilterData(param, credlyData)
+	if err != nil {
+		log.Fatalf("Error: Failed to filter data: %v", err)
+	}
+
+	// Print the filtered badges
+	for _, badge := range filteredBadges {
+		fmt.Printf("Badge Name: %s\n", badge.Name)
+		fmt.Printf("Badge Description: %s\n", badge.Description)
+		fmt.Printf("Badge Image URL: %s\n", badge.ImageURL)
+		fmt.Printf("Badge URL: %s\n\n", badge.URL)
+	}
 }
 
 func init() {
@@ -54,5 +63,4 @@ func init() {
 	// is called directly, e.g.:
 	// versionCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 	// rootCmd.Flags().StringP("username", "u", "", "Your Credly username/id")
-
 }
