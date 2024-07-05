@@ -1,3 +1,7 @@
+// Package cmd version
+/*
+Copyright © 2024 Shanil Hirani
+*/
 package cmd
 
 import (
@@ -10,12 +14,12 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "shows the current version of go-credly",
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		fmt.Println("version 0.0.1")
 	},
 }
 
-func init() {
+func init() { //nolint:gochecknoinits // required by cobra
 	rootCmd.AddCommand(versionCmd)
 
 	// Here you will define your flags and configuration settings.

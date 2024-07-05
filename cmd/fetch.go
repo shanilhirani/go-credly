@@ -1,3 +1,4 @@
+// Package cmd fetch
 /*
 Copyright © 2024 Shanil Hirani
 */
@@ -12,6 +13,8 @@ import (
 	"github.com/shanilhirani/go-credly/internal/fetch"
 )
 
+var username string
+
 var fetchCmd = &cobra.Command{
 	Use:   "fetch",
 	Short: "Fetch user badges from Credly API",
@@ -19,12 +22,18 @@ var fetchCmd = &cobra.Command{
 	Run:   fetchRun,
 }
 
-func fetchRun(cmd *cobra.Command, args []string) {
-	// Check if the required argument (user ID or username) is provided
-	if len(args) < 1 {
-		log.Fatalf("Error: Credly Username/ID not supplied")
+func fetchRun(_ *cobra.Command, args []string) {
+	var param string
+
+	switch {
+	case len(args) > 0:
+		param = args[0]
+	case username != "":
+		param = username
+	default:
+		log.Fatalf("Error: Neither Argument or Username Flag where provided. Exiting...")
+		return
 	}
-	param := args[0]
 
 	// Create an HTTP client
 	client := fetch.NewClient(nil)
@@ -50,7 +59,7 @@ func fetchRun(cmd *cobra.Command, args []string) {
 	}
 }
 
-func init() {
+func init() { //nolint:gochecknoinits // required by cobra
 	rootCmd.AddCommand(fetchCmd)
 
 	// Here you will define your flags and configuration settings.
@@ -61,6 +70,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// versionCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	// rootCmd.Flags().StringP("username", "u", "", "Your Credly username/id")
+	fetchCmd.Flags().StringVarP(&username, "username", "u", "", "Credly Username or ID")
 }

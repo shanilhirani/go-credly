@@ -1,4 +1,7 @@
 // Package cmd root
+/*
+Copyright © 2024 Shanil Hirani
+*/
 package cmd
 
 import (
@@ -25,7 +28,7 @@ func Execute() {
 	}
 }
 
-func init() {
+func init() { //nolint:gochecknoinits // required by cobra
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
