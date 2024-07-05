@@ -36,7 +36,8 @@ func NewClient(transport HTTPClient) *Client {
 // For example: client.Fetch(param).DoSomething()
 func (c *Client) Fetch(param string) (*types.CredlyData, error) {
 	url := fmt.Sprintf("https://api.credly.com/users/%s/badges.json", param)
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", url, nil) //nolint:noctx // context is not needed for this example
+	req.Header.Set("Accept", "application/json")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create GET request: %w", err)
 	}
@@ -45,12 +46,13 @@ func (c *Client) Fetch(param string) (*types.CredlyData, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to perform GET request: %w", err)
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body) // Read the response body for error message
 		return nil, fmt.Errorf("received non-OK response code: %d, body: %s", resp.StatusCode, body)
 	}
+
+	defer resp.Body.Close() //nolint:errcheck // no comment
 
 	var result types.CredlyData
 	err = json.NewDecoder(resp.Body).Decode(&result)
@@ -65,6 +67,10 @@ func (c *Client) Fetch(param string) (*types.CredlyData, error) {
 	return &result, nil
 }
 
+// FilteredBadge represents a filtered version of the Badge struct
+// It contains only the required fields from the Badge struct
+// This struct is used for filtering the data returned by the Credly API
+// For example: filteredBadges, err := FilterData("john_doe") // returns a slice of FilteredBadge structs
 type FilteredBadge struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
