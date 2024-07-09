@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/shanilhirani/go-credly/pkgs/types"
 )
@@ -31,11 +32,11 @@ func NewClient(transport HTTPClient) *Client {
 }
 
 // Fetch performs a GET request to the specified URL and returns the response data as a CredlyData struct
-// It takes a parameter 'param' which is the username or user ID for which the data needs to be fetched
+// It takes a parameter 'username' which is the username or user ID for which the data needs to be fetched
 // It returns a pointer to a CredlyData struct and an error if any occurs during the request or unmarshalling process
 // For example: client.Fetch(param).DoSomething()
-func (c *Client) Fetch(param string) (*types.CredlyData, error) {
-	url := fmt.Sprintf("https://api.credly.com/users/%s/badges.json", param)
+func (c *Client) Fetch(username string) (*types.CredlyData, error) {
+	url := fmt.Sprintf("https://api.credly.com/users/%s/badges.json", username)
 	req, err := http.NewRequest("GET", url, nil) //nolint:noctx // context is not needed for this example
 	req.Header.Set("Accept", "application/json")
 	if err != nil {
@@ -72,36 +73,63 @@ func (c *Client) Fetch(param string) (*types.CredlyData, error) {
 // This struct is used for filtering the data returned by the Credly API
 // For example: filteredBadges, err := FilterData("john_doe") // returns a slice of FilteredBadge structs
 type FilteredBadge struct {
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	ImageURL    string `json:"image_url"`
-	URL         string `json:"url"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	ImageURL      string `json:"image_url"`
+	URL           string `json:"url"`
+	ExpiresAtDate string `json:"expires_at_date"`
 }
 
 // FilterData filters the CredlyData struct to include only the required fields
-// It takes a parameter 'param' which is the username or user ID for which the data needs to be filtered
+// It takes a parameter 'username' which is the username or user ID for which the data needs to be filtered
 // It returns a slice of filtered Badge structs and an error if any occurs during the filtering process
 // For example: filteredBadges, err := FilterData("john_doe")
-func FilterData(param string, data *types.CredlyData) ([]FilteredBadge, error) {
+func FilterData(username string, data *types.CredlyData, includeExpired bool) ([]FilteredBadge, error) {
 	var filteredBadges []FilteredBadge
+	now := time.Now()
 
 	// Iterate over the slice of anonymous structs in CredlyData
 	for _, badge := range data.Data {
 		// Check if the badge is issued to the specified user
-		if badge.EarnerPath == fmt.Sprintf("/users/%s", param) {
+		if badge.EarnerPath != fmt.Sprintf("/users/%s", username) {
+			continue
+		}
+
+		// Parse the ExpiresAtDate string into a time.Time value
+		expiresAtDate, err := parseExpiresAtDate(badge.ExpiresAtDate)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse ExpiresAtDate for badge ID %s: %v", badge.ID, err)
+		}
+
+		// Check if the badge is expired or if we want to include expired badges
+		if includeExpired || expiresAtDate.After(now) {
 			filteredBadge := FilteredBadge{
-				Name:        badge.BadgeTemplate.Name,
-				Description: badge.BadgeTemplate.Description,
-				ImageURL:    badge.BadgeTemplate.ImageURL,
-				URL:         badge.BadgeTemplate.URL,
+				Name:          badge.BadgeTemplate.Name,
+				Description:   badge.BadgeTemplate.Description,
+				ImageURL:      badge.BadgeTemplate.ImageURL,
+				URL:           badge.BadgeTemplate.URL,
+				ExpiresAtDate: badge.ExpiresAtDate,
 			}
 			filteredBadges = append(filteredBadges, filteredBadge)
 		}
 	}
 
 	if len(filteredBadges) == 0 {
-		return nil, fmt.Errorf("no badges found for user %s", param)
+		return nil, fmt.Errorf("no badges found for user %s", username)
 	}
 
 	return filteredBadges, nil
+}
+
+func parseExpiresAtDate(expiresAtDate string) (time.Time, error) {
+	if expiresAtDate == "" {
+		return time.Time{}, nil // Return an empty time.Time value for an empty string
+	}
+
+	parsedTime, err := time.Parse("2006-01-02", expiresAtDate)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return parsedTime, nil
 }
