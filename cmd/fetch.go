@@ -13,7 +13,7 @@ import (
 	"github.com/shanilhirani/go-credly/internal/fetch"
 )
 
-var username string
+var includeExpired bool
 
 var fetchCmd = &cobra.Command{
 	Use:   "fetch",
@@ -28,10 +28,8 @@ func fetchRun(_ *cobra.Command, args []string) {
 	switch {
 	case len(args) > 0:
 		param = args[0]
-	case username != "":
-		param = username
 	default:
-		log.Fatalf("Error: Neither Argument or Username Flag where provided. Exiting...")
+		log.Fatalf("Error: Please enter your credly user ID or username.")
 		return
 	}
 
@@ -45,7 +43,7 @@ func fetchRun(_ *cobra.Command, args []string) {
 	}
 
 	// Filter the data
-	filteredBadges, err := fetch.FilterData(param, credlyData)
+	filteredBadges, err := fetch.FilterData(param, credlyData, includeExpired)
 	if err != nil {
 		log.Fatalf("Error: Failed to filter data: %v", err)
 	}
@@ -70,5 +68,5 @@ func init() { //nolint:gochecknoinits // required by cobra
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	fetchCmd.Flags().StringVarP(&username, "username", "u", "", "Credly Username or ID")
+	fetchCmd.Flags().BoolVarP(&includeExpired, "include-expired", "e", false, "Include expired badges")
 }
