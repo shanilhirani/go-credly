@@ -121,14 +121,25 @@ func FilterData(username string, data *types.CredlyData, includeExpired bool) ([
 	return filteredBadges, nil
 }
 
+var utcLoc *time.Location
+
 func parseExpiresAtDate(expiresAtDate string) (time.Time, error) {
 	if expiresAtDate == "" {
-		return time.Time{}, nil // Return an empty time.Time value for an empty string
+		return time.Time{}, nil
 	}
 
-	parsedTime, err := time.Parse("2006-01-02", expiresAtDate)
+	if utcLoc == nil {
+		var err error
+		utcLoc, err = time.LoadLocation("UTC")
+		if err != nil {
+			return time.Time{}, fmt.Errorf("failed to load UTC location: %w", err)
+		}
+	}
+
+	parsedTime, err := time.ParseInLocation("2006-01-02", expiresAtDate, utcLoc)
 	if err != nil {
-		return time.Time{}, err
+		var zeroTime time.Time
+		return zeroTime, fmt.Errorf("failed to parse date '%s': %w", expiresAtDate, err)
 	}
 
 	return parsedTime, nil
