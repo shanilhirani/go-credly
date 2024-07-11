@@ -73,11 +73,11 @@ func (c *Client) Fetch(username string) (*types.CredlyData, error) {
 // This struct is used for filtering the data returned by the Credly API
 // For example: filteredBadges, err := FilterData("john_doe") // returns a slice of FilteredBadge structs
 type FilteredBadge struct {
-	Name          string `json:"name"`
-	Description   string `json:"description"`
-	ImageURL      string `json:"image_url"`
-	URL           string `json:"url"`
-	ExpiresAtDate string `json:"expires_at_date"`
+	BadgeName          string `json:"name"`
+	BadgeDescription   string `json:"description"`
+	BadgeImageURL      string `json:"image_url"`
+	BadgeURL           string `json:"url"`
+	BadgeExpiresAtDate string `json:"expires_at_date"`
 }
 
 // FilterData filters the CredlyData struct to include only the required fields
@@ -104,11 +104,11 @@ func FilterData(username string, data *types.CredlyData, includeExpired bool) ([
 		// Check if the badge is expired or if we want to include expired badges
 		if includeExpired || expiresAtDate.After(now) {
 			filteredBadge := FilteredBadge{
-				Name:          badge.BadgeTemplate.Name,
-				Description:   badge.BadgeTemplate.Description,
-				ImageURL:      badge.BadgeTemplate.ImageURL,
-				URL:           badge.BadgeTemplate.URL,
-				ExpiresAtDate: badge.ExpiresAtDate,
+				BadgeName:          badge.BadgeTemplate.Name,
+				BadgeDescription:   badge.BadgeTemplate.Description,
+				BadgeImageURL:      badge.BadgeTemplate.ImageURL,
+				BadgeURL:           badge.BadgeTemplate.URL,
+				BadgeExpiresAtDate: badge.ExpiresAtDate,
 			}
 			filteredBadges = append(filteredBadges, filteredBadge)
 		}
