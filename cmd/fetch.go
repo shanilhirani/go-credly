@@ -50,10 +50,10 @@ func fetchRun(_ *cobra.Command, args []string) {
 
 	// Print the filtered badges
 	for _, badge := range filteredBadges {
-		fmt.Printf("Badge Name: %s\n", badge.Name)
-		fmt.Printf("Badge Description: %s\n", badge.Description)
-		fmt.Printf("Badge Image URL: %s\n", badge.ImageURL)
-		fmt.Printf("Badge URL: %s\n\n", badge.URL)
+		fmt.Printf("Badge Name: %s\n", badge.BadgeName)
+		fmt.Printf("Badge Description: %s\n", badge.BadgeDescription)
+		fmt.Printf("Badge Image URL: %s\n", badge.BadgeImageURL)
+		fmt.Printf("Badge URL: %s\n\n", badge.BadgeURL)
 	}
 }
 
