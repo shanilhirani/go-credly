@@ -104,14 +104,14 @@ func ToFile(filename string, badges []fetch.FilteredBadge) (bool, error) {
 	return true, nil
 }
 
-func createOrOpenFile(filePath string) (*os.File, error) {
-	if _, err := os.Stat(filePath); err != nil && os.IsNotExist(err) {
-		return os.Create(filepath.Clean(filePath))
+func createOrOpenFile(fp string) (*os.File, error) {
+	if _, err := os.Stat(fp); err != nil && os.IsNotExist(err) {
+		return os.Create(filepath.Clean(fp))
 	} else if err != nil {
 		return nil, fmt.Errorf("%w", err)
 	}
 
-	return os.OpenFile(filePath, os.O_RDWR|os.O_TRUNC, 0o600)
+	return os.OpenFile(fp, os.O_RDWR|os.O_TRUNC, 0o600)
 }
 
 type closer interface {
