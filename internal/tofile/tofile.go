@@ -93,7 +93,7 @@ func ToFile(filename string, badges []fetch.FilteredBadge) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	defer file.Close()
+	defer safeClose(file)
 
 	bw := NewBadgeWriter(file)
 	err = bw.UpdateContent(file, badges)
@@ -113,4 +113,13 @@ func createOrOpenFile(filePath string) (*os.File, error) {
 	}
 
 	return os.OpenFile(filePath, os.O_RDWR|os.O_TRUNC, 0o600)
+}
+type closer interface {
+	Close() error
+}
+
+func safeClose(c closer) {
+	if err := c.Close(); err != nil {
+		fmt.Println("Received error:", err)
+	}
 }
