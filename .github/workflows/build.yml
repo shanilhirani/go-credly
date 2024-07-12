@@ -2,9 +2,17 @@ name: build
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - feat/*
+      - hotfix/*
+      - bugfix/*
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - feat/*
+      - hotfix/*
+      - bugfix/*
   workflow_dispatch:
 
 jobs:
