@@ -16,6 +16,7 @@ Go Credly is a Go App which enables users to obtain Certification Badges earned 
 If your Credly Badges are made public then all you need is your Credly `username` and you'll be able to pull your badges programmatically.
 
 ### Use case
+
 - You could use this tool to dynamically update a CV/Resume, Portfolios and Personal Websites using a Github Action, or just running the binary on a cron.
 
 ## Prerequisites
@@ -39,7 +40,7 @@ To run the application, execute the following command:
 
 `go run main.go <yourcredlyusername>`
 
-Then *go-credly* will attempt to fetch data from Credly's API and return the result in JSON to standard out.
+Then _go-credly_ will attempt to fetch data from Credly's API and return the result in JSON to standard out.
 
 ## Configuration
 
