@@ -23,7 +23,6 @@ linters-settings:
       global:
         nosec: false
 
-
 linters:
   disable-all: true
   enable:

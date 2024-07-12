@@ -1,36 +1,29 @@
 {
-    "[go]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
-        },
-    },
-    "[go.mod]": {
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
-        },
-    },
-    // gopls
-    "go.useLanguageServer": true,
-    "gopls": {
-        "formatting.local": "github.com/shanilhirani/go-credly",
-        "formatting.gofumpt": true
-    },
-    // golangci-lint
-    "go.lintTool": "golangci-lint",
-    "go.lintFlags": [
-        "--fast"
-    ],
-    "[go][go.mod]": {
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": "explicit"
-        }
-    },
-    "cSpell.words": [
-        "Credly",
-        "Credly's",
-        "nosec",
-        "pkgs"
-    ]
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  // gopls
+  "go.useLanguageServer": true,
+  "gopls": {
+    "formatting.local": "github.com/shanilhirani/go-credly",
+    "formatting.gofumpt": true
+  },
+  // golangci-lint
+  "go.lintTool": "golangci-lint",
+  "go.lintFlags": ["--fast"],
+  "[go][go.mod]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "cSpell.words": ["Credly", "Credly's", "nosec", "pkgs"]
 }
