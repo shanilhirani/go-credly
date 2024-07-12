@@ -13,9 +13,9 @@ import (
 )
 
 var (
-	ErrMissingRequiredParam = func(errorType string) error {
-		return fmt.Errorf("missing %s parameter", errorType)
 	// ErrMissingRequiredParam is a function that returns an error for missing required parameters
+	ErrMissingRequiredParam = func(errorType ...[]string) error {
+		return fmt.Errorf("missing required parameter(s): %v", errorType)
 	}
 	// ErrFailedToParse is a function that returns an error for failed parsing
 	ErrFailedToParse = func(field string) error {
@@ -136,7 +136,7 @@ var utcLoc *time.Location
 
 func parseExpiresAtDate(expiresAtDate string) (time.Time, error) {
 	if expiresAtDate == "" {
-		return time.Time{}, ErrMissingRequiredParam("expiresAtDate")
+		return time.Time{}, ErrMissingRequiredParam([]string{"expiresAtDate"})
 	}
 
 	if utcLoc == nil {
