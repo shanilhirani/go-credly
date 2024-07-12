@@ -18,18 +18,18 @@ archives:
         format: zip
 dockers:
   - image_templates:
-    - "ghcr.io/shanilhirani/go-credly:latest"
-    - "ghcr.io/shanilhirani/go-credly:{{ .Major }}"
-    - "ghcr.io/shanilhirani/go-credly:{{ .Major }}.{{ .Minor }}"
-    - "ghcr.io/shanilhirani/go-credly:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+      - "ghcr.io/shanilhirani/go-credly:latest"
+      - "ghcr.io/shanilhirani/go-credly:{{ .Major }}"
+      - "ghcr.io/shanilhirani/go-credly:{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/shanilhirani/go-credly:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
     build_flag_templates:
-    - "--pull"
-    # OCI annotations: https://github.com/opencontainers/image-spec/blob/main/annotations.md
-    - "--label=org.opencontainers.image.created={{.Date}}"
-    - "--label=org.opencontainers.image.name={{.ProjectName}}"
-    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-    - "--label=org.opencontainers.image.version={{.Version}}"
-    - "--label=org.opencontainers.image.source={{.GitURL}}"
+      - "--pull"
+      # OCI annotations: https://github.com/opencontainers/image-spec/blob/main/annotations.md
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.name={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.source={{.GitURL}}"
 release:
   github:
   name_template: "{{.Version}}"

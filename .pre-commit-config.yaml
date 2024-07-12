@@ -1,0 +1,37 @@
+---
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        args:
+          - "--markdown-linebreak-ext=md"
+      - id: mixed-line-ending
+        args:
+          - "--fix=auto"
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-json
+        exclude: ^.vscode/
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: detect-private-key
+      - id: no-commit-to-branch
+  - repo: "https://github.com/pre-commit/mirrors-prettier"
+    rev: v3.0.0
+    hooks:
+      - id: prettier
+        stages: [commit]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.5.3
+    hooks:
+      - id: commitizen
+      - id: commitizen-branch
+        stages: [push]
+  - repo: local
+    hooks:
+      - id: make-all
+        name: make-all
+        description: this will run `make all`
+        entry: .pre-commit-scripts/make_all.sh
+        language: script
