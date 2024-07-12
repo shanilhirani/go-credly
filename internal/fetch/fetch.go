@@ -12,6 +12,15 @@ import (
 	"github.com/shanilhirani/go-credly/pkgs/types"
 )
 
+var (
+	ErrMissingRequiredParam = func(errorType string) error {
+		return fmt.Errorf("missing %s parameter", errorType)
+	}
+	ErrFailedToParse = func(field string) error {
+		return fmt.Errorf("failed to parse %s", field)
+	}
+)
+
 // HTTPClient is an interface for making HTTP requests
 type HTTPClient interface {
 	Do(*http.Request) (*http.Response, error)
@@ -125,7 +134,7 @@ var utcLoc *time.Location
 
 func parseExpiresAtDate(expiresAtDate string) (time.Time, error) {
 	if expiresAtDate == "" {
-		return time.Time{}, nil
+		return time.Time{}, ErrMissingRequiredParam("expiresAtDate")
 	}
 
 	if utcLoc == nil {
@@ -139,7 +148,7 @@ func parseExpiresAtDate(expiresAtDate string) (time.Time, error) {
 	parsedTime, err := time.ParseInLocation("2006-01-02", expiresAtDate, utcLoc)
 	if err != nil {
 		var zeroTime time.Time
-		return zeroTime, fmt.Errorf("failed to parse date '%s': %w", expiresAtDate, err)
+		return zeroTime, ErrFailedToParse("expiresAtDate")
 	}
 
 	return parsedTime, nil
