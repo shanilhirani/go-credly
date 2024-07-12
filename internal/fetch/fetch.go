@@ -15,7 +15,9 @@ import (
 var (
 	ErrMissingRequiredParam = func(errorType string) error {
 		return fmt.Errorf("missing %s parameter", errorType)
+	// ErrMissingRequiredParam is a function that returns an error for missing required parameters
 	}
+	// ErrFailedToParse is a function that returns an error for failed parsing
 	ErrFailedToParse = func(field string) error {
 		return fmt.Errorf("failed to parse %s", field)
 	}
