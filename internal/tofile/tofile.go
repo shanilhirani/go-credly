@@ -105,15 +105,15 @@ func ToFile(filename string, badges []fetch.FilteredBadge) (bool, error) {
 }
 
 func createOrOpenFile(filePath string) (*os.File, error) {
-	_, err := os.Stat(filePath)
-	if os.IsNotExist(err) {
-		return os.Create(filePath)
+	if _, err := os.Stat(filePath); err != nil && os.IsNotExist(err) {
+		return os.Create(filepath.Clean(filePath))
 	} else if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w", err)
 	}
 
 	return os.OpenFile(filePath, os.O_RDWR|os.O_TRUNC, 0o600)
 }
+
 type closer interface {
 	Close() error
 }
