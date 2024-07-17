@@ -11,44 +11,77 @@
 
 ## About
 
-Go Credly is a Go App which enables users to obtain Certification Badges earned on Credly's Certification Platform.
+Go-credly written in Go (hence the name) enables users to obtain Certification Badges earned on Credly's Certification Platform.
 
-If your Credly Badges are made public then all you need is your Credly `username` and you'll be able to pull your badges programmatically.
+All you need is your Credly `username` and _go-credly_ will fetch data from Credly's API, filter for active badges (can be overridden) and return either a Markdown or Standard Out.
 
 ### Use case
 
-- You could use this tool to dynamically update a CV/Resume, Portfolios and Personal Websites using a Github Action, or just running the binary on a cron.
+- You could use this tool to dynamically update a CV/Resume, Portfolios and Personal Websites using a Github Action, or just running the binary on a cron to fetch your credly badges.
 
 ## Prerequisites
 
-- Credly with Public Badges
+- Credly Account with Public Visibility enabled.
+  ![alt text](docs/image.png)
 - [Go](https://golang.org/dl/) installed (version 1.22 or later)
 - Internet connection
 
 ## Installation
 
-Clone the repository:
+Download for Binary and Docker Image TBC.
+
+Building from Source:
 
 ```bash
-git clone https://github.com/yourusername/go_credly.git
-cd go_credly
+1. git clone https://github.com/yourusername/go_credly.git
+2. cd go_credly
+3. go build
+4. chmod +x ./go-credly
 ```
 
 ## Usage
 
-To run the application, execute the following command:
+```bash
+ ./go-credly fetch -h
+This command fetches user badges from the Credly API using the provided user ID or username.
 
-`go run main.go <yourcredlyusername>`
+Usage:
+  go-credly fetch [flags]
 
-Then _go-credly_ will attempt to fetch data from Credly's API and return the result in JSON to standard out.
+Flags:
+  -h, --help              help for fetch
+  -e, --include-expired   Include expired badges
+  -o, --out-file string   Write results to a file with Markdown extension. e.g BADGES.md
+```
 
-## Configuration
+Example:
 
-TBC
+`./go-credly fetch shanilhirani`
+
+```bash
+2024/07/17 14:50:33 Displaying Credly Badges to stdout
+Badge Name: AWS Certified Solutions Architect – Professional
+Badge Description: Earners of this certification have an extensive understanding of designing technical strategies to accomplish specific business goals. They demonstrated the ability to balance best practices and trade-offs based on business context. Badge owners are able to design solutions across multiple platforms and providers.
+Badge Image URL: https://images.credly.com/images/2d84e428-9078-49b6-a804-13c15383d0de/image.png
+Badge URL: https://www.credly.com/org/amazon-web-services/badge/aws-certified-solutions-architect-professional
+```
+
+Example 2:
+
+Creating a _CREDLY.md_ including expired badges.
+
+`./go-credly fetch shanilhirani`
+
+```bash
+ ./go-credly fetch shanilhirani -e -o CREDLY
+2024/07/17 15:00:27 Including expired badges
+2024/07/17 15:00:28 Writing Credly Badges to CREDLY.md
+2024/07/17 15:00:28 Credly Badges written to CREDLY.md
+```
 
 ## License
 
-This project is licensed under the Creative Commons License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
