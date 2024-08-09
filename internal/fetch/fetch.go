@@ -109,7 +109,12 @@ func FilterData(username string, data *types.CredlyData, includeExpired bool) ([
 		// Parse the ExpiresAtDate string into a time.Time value
 		expiresAtDate, err := parseExpiresAtDate(badge.ExpiresAtDate)
 		if err != nil {
-			return nil, fmt.Errorf("failed to parse ExpiresAtDate for badge ID %s: %v", badge.ID, err)
+			if badge.ExpiresAtDate == "" {
+				// Handle the case where ExpiresAtDate is an empty string (null)
+				expiresAtDate = time.Time{} // Set a zero value for time.Time
+			} else {
+				return nil, fmt.Errorf("failed to parse ExpiresAtDate for badge ID %s: %v", badge.ID, err)
+			}
 		}
 
 		// Check if the badge is expired or if we want to include expired badges
